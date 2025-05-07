@@ -1,6 +1,10 @@
+import { config } from 'dotenv';
+config();
 import express, {Request, Response} from "express";
 import mongoose from "mongoose"
 import Deck from "./models/Deck.js"
+
+console.log(process.env.MONGO_URL);
 
 // When express function is called return app
 const app = express();
@@ -23,11 +27,11 @@ app.post("/decks", async (req: Request, res: Response) => {
 });
 
 // Connection to mongoDB using mongoose
-mongoose.connect(
-    "mongodb+srv://chrisngucs:uYWKl2X6skpr3DUm@cluster0.8ksyzwt.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0"
-).then(() => {
-    console.log(`Listening on port: ${PORT}`);
-    app.listen(PORT);
-})
+mongoose.connect
+    (process.env.MONGO_URL!).then(() => {
+        console.log(`Listening on port: ${PORT}`);
+        app.listen(PORT);
+        }
+    );
 
 
