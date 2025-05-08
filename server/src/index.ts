@@ -1,14 +1,21 @@
 import { config } from 'dotenv';
 config();
+
 import express, {Request, Response} from "express";
 import mongoose from "mongoose"
+import cors from "cors"
 import Deck from "./models/Deck.js"
 
-console.log(process.env.MONGO_URL);
-
 // When express function is called return app
-const app = express();
 const PORT = 5000;
+const app = express();
+
+//CORS allows certain things to make requests to the server
+app.use(
+    cors({
+        origin: '*',
+    })
+);
 
 // Express middleware function to use when requests are made to the API
 app.use(express.json());
