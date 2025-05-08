@@ -1,29 +1,69 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import './App.css'
 
+// Declare title and _id types
+type TDeck = {
+  title: string;
+  _id: string;
+};
+
 function App() {
+
+  // using array destructuring to create and set variables to stateValue and dispatcher
+  // State hook for decks and setting decks
+  const [decks, setDecks] = useState<TDeck[]>([]);
+
+  // State hook for title and setting title
   const [title, setTitle] = useState("");
 
-  function handleCreateDeck(e: React.FormEvent){
+  async function handleCreateDeck(e: React.FormEvent){
     e.preventDefault();
-    // Sends a POST request to the api at /decks
-    fetch("http://localhost:5000/decks", {
+    // Sends a POST request to the AOI at /decks
+    await fetch("http://localhost:5000/decks", {
       method: 'POST',
       // In order for the backend API to accept the data it must know the type
       headers: {
-        'Content-Type': 'application/json', // Add this header
+        'Content-Type': 'application/json', //Data type is Application JSON
       },
       // The backend requires a stringified body 
       body: JSON.stringify({
         title,
       }),
     });
+    // Clear input on button press
+    setTitle("");
   }
+
+  // Load decks on website load
+  useEffect(() => {
+    async function fetchDecks() {
+      // response is waiting for the deck data from the DB
+      const response = await fetch("http://localhost:5000/decks");
+      // Convert object by using the object's .json function to be stored as newDecks
+      const newDecks = await response.json();
+      // setDecks to the fetched JSON decks
+      setDecks(newDecks);
+    }
+    fetchDecks();
+    }, []);
+  
 
   return (
     <div className="App">
-      <form onSubmit={handleCreateDeck}>
-        <label htmlFor="deck-title">Deck Title</label>
+      <div className="decks">
+        {
+          // Map the decks into list items by id and title
+          decks.map((deck) => (
+            <li key={deck._id}>{deck.title}</li>
+          ))
+        }
+      </div>
+      <form onSubmit={handleCreateDeck}> 
+        
+        <label htmlFor="deck-title">
+          Deck Title
+        </label>
+
         <input 
           id="deck-title"
           // The text in the input is updated based on the state

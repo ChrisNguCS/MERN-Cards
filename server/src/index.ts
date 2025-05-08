@@ -17,8 +17,18 @@ app.use(
     })
 );
 
-// Express middleware function to use when requests are made to the API
+// Use Express as middleware function to use when requests are made to the API
 app.use(express.json());
+
+// GET request to return decks to user
+app.get("/decks", async (req: Request, res: Response) => {
+    // const decks will store all of the deck data
+    const decks = await Deck.find();
+    console.log(decks);
+    // Send response of decks as JSON
+    res.json(decks)
+});
+
 
 // POST request create new deck model
 app.post("/decks", async (req: Request, res: Response) => {
@@ -40,5 +50,3 @@ mongoose.connect
         app.listen(PORT);
         }
     );
-
-

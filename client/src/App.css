@@ -5,38 +5,44 @@
   text-align: center;
 }
 
-.logo {
-  height: 6em;
-  padding: 1.5em;
-  will-change: filter;
-  transition: filter 300ms;
-}
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
-}
-.logo.react:hover {
-  filter: drop-shadow(0 0 2em #61dafbaa);
+.App{
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
 }
 
-@keyframes logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.App form{
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+  align-items: center;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  a:nth-of-type(2) .logo {
-    animation: logo-spin infinite 20s linear;
-  }
+.decks {
+  display: grid;
+  width: 700px;
+  margin: 0 auto;
+  grid-template-columns: repeat(3, 1fr);
+  grid-gap: 30px;
+  color: black;
+
 }
 
-.card {
-  padding: 2em;
+.decks li{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 90%;
+  height: 150px;
+  background: white;
+  border: 1px, solid white;
+  box-shadow: 13px 11px 15px 0px rgb(86,86,86);
+  border-radius: 10px;
+  font-size: 1.5em;
+  font-weight: 500;
+  font-family: inherit;
 }
 
-.read-the-docs {
-  color: #888;
+.decks li:hover{
+  background: #eee;
 }
