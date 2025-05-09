@@ -1,11 +1,10 @@
 import { useEffect, useState } from 'react'
+import { Link } from "react-router";
 import './App.css'
+import { deleteDeck } from "./api/deleteDeck";
+import { getDecks, type TDeck } from "./api/getDeck";
+import { createDeck } from "./api/createDeck";
 
-// Declare title and _id types
-type TDeck = {
-  title: string;
-  _id: string;
-};
 
 function App() {
 
@@ -18,29 +17,24 @@ function App() {
 
   async function handleCreateDeck(e: React.FormEvent){
     e.preventDefault();
-    // Sends a POST request to the AOI at /decks
-    await fetch("http://localhost:5000/decks", {
-      method: 'POST',
-      // In order for the backend API to accept the data it must know the type
-      headers: {
-        'Content-Type': 'application/json', //Data type is Application JSON
-      },
-      // The backend requires a stringified body 
-      body: JSON.stringify({
-        title,
-      }),
-    });
+    // 1:56:20
+    const deck = await createDeck(title);
+    setDecks([...decks, deck])
     // Clear input on button press
     setTitle("");
+  }
+
+  async function handleDeleteDeck(deckId: string){
+    await deleteDeck(deckId);
+    // 1:55:20
+    // Optimistic update to remove deck from client screen without refreshing
+    setDecks(decks.filter((deck) => deck._id!== deckId));
   }
 
   // Load decks on website load
   useEffect(() => {
     async function fetchDecks() {
-      // response is waiting for the deck data from the DB
-      const response = await fetch("http://localhost:5000/decks");
-      // Convert object by using the object's .json function to be stored as newDecks
-      const newDecks = await response.json();
+      const newDecks = await getDecks();
       // setDecks to the fetched JSON decks
       setDecks(newDecks);
     }
@@ -50,14 +44,19 @@ function App() {
 
   return (
     <div className="App">
-      <div className="decks">
+      <ul className="decks">
         {
           // Map the decks into list items by id and title
           decks.map((deck) => (
-            <li key={deck._id}>{deck.title}</li>
+            <li key={deck._id}>
+              <button onClick={() => handleDeleteDeck(deck._id)}>
+                X
+              </button>
+              <Link to={`decks/${deck._id}`}>{deck.title}</Link>
+            </li>
           ))
         }
-      </div>
+      </ul>
       <form onSubmit={handleCreateDeck}> 
         
         <label htmlFor="deck-title">

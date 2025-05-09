@@ -19,16 +19,17 @@
 }
 
 .decks {
+
   display: grid;
   width: 700px;
   margin: 0 auto;
   grid-template-columns: repeat(3, 1fr);
   grid-gap: 30px;
   color: black;
-
 }
 
 .decks li{
+  position: relative;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -41,6 +42,14 @@
   font-size: 1.5em;
   font-weight: 500;
   font-family: inherit;
+}
+
+.decks li button{
+  position: absolute;
+  font-size: 14px;
+  top: 5px;
+  right: 5px;
+  background-color: transparent;
 }
 
 .decks li:hover{

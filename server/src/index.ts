@@ -43,6 +43,15 @@ app.post("/decks", async (req: Request, res: Response) => {
     res.json(createdDeck);
 });
 
+app.delete("/decks/:deckId", async (req: Request, res: Response) => {
+    // The parameters of delete should include the ID
+    const deckId = req.params.deckId;
+    // Once we have ID then we can find and delete it
+    const deck = await Deck.findByIdAndDelete(deckId);
+    // Result returns the deleted item
+    res.json(deck);
+});
+
 // Connection to mongoDB using mongoose
 mongoose.connect
     (process.env.MONGO_URL!).then(() => {
